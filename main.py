@@ -1,15 +1,27 @@
+import re
 from flask import Flask, jsonify, request
-from flask import send_file
+from flask import send_file, redirect, url_for, render_template
 import json, requests
 import certifi
 
-spotify_token = "BQA5lG7hMb5NsCGVAmDlhVEE-dd9bHd1uUSJnFg8x3itOgzQUdLvdgrHJYts0GJG9hrDB1k5dFAjIlmz6gs_1Bir7p8GmJSb_35gOdu4H7cj-9Sk3TrDiSlvaqrUcbQT-Qcg0zFAq1G3DhLbhwH6c9r2uwXlqCWS9KZaX5-aBbuH7CG8Zf8DCjWesqm8gVGWODPHdaOQJoc9Mzkfv9AUG_qx8XuwGFhgNlRpg3PBH8rFP4t-K90lOCvsnDPCe4iJPO8bUdhIXJq14XXE"
+spotify_token = "BQDtxbPDRS41q6yisKUMWWiBfjqjQT0CtTrP0adlcPKqHDaQdM9C80oec7dnuQIlHhulyTowCzFoT5S-s9-JhO8JYz08Yb2a7iK9i9FzQhX9lxG4k-nAoKdCHjX7RQPECpkpU70ShrUIJVPAhIF8Hwue9nVn_qyU40NX3NbpQQKlw2hLmYsbJrdjK9EnHwIfmrdhjchRZGnH092UWEwQGR9NA0fLDIxVGREiAhys-S_GapaGGIYV-GNw9tdCXt6ECIpAhF_V9O-3fcUH"
 #refresh_token = "AQBkNMTR67Z7B_aqbyrtW1K7GWeoR1Yb0JtdqwYQA_h4LlKulZtMr5vwwoe6yzG9osm2G6sCGReHWQvDlpepkskFHs-d6SO2BHuehTuWwjCSNqy36dYZclV8tXmbGzLWfNg"
 
 app = Flask(__name__)
-@app.route("/", methods=["GET"])
+
+formData = {}
+
+@app.route("/", methods=["GET", "POST"])
 def main():
-    return send_file("index.html")
+    if request.method == 'POST':
+        playlistID = request.form['playlistId']
+        offset = request.form['offset']
+        formData['playlistID'] = playlistID
+        formData['offset'] = str(offset)
+        #return redirect(url_for('/me/top/<type>/<number>'))
+        return send_file("second.html")
+    else:
+        return send_file("index.html")
 
 @app.route("/me/top/<type>/<number>", methods=["GET"])
 def topSongs(type, number):
